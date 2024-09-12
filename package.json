@@ -1,0 +1,23 @@
+{
+  "name": "magistratura",
+  "version": "0.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/urodstvo/magistratura.git"
+  },
+  "keywords": [
+    "master's",
+    "degree"
+  ],
+  "author": "Zubtsov Andrey",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/urodstvo/magistratura/issues"
+  },
+  "homepage": "https://github.com/urodstvo/magistratura#readme",
+  "description": ""
+}
