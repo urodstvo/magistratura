@@ -1,6 +1,6 @@
 export const highSpeedFunc = (x: number) => {
-  if (x < 2) return 1;
-  if (x === 2) return 0;
+  if (x <= 1) return 1;
+  if (x > 1 && x <= 3) return -0.5 * x + 1.5;
 
   return undefined;
 };
@@ -13,9 +13,9 @@ export const lowSpeedFunc = (x: number) => {
 };
 
 export const medSpeedFunc = (x: number) => {
-  if (x === 2) return 0;
-  if (x > 2 && x < 5) return 1;
-  if (x === 5) return 0;
+  if (x >= 2 && x < 3) return x - 2;
+  if (x >= 3 && x <= 4) return 1;
+  if (x > 4 && x <= 6) return -0.5 * x + 3;
 
   return undefined;
 };
