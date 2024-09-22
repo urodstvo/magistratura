@@ -12,8 +12,7 @@ import {
 } from "recharts";
 
 import { ChartConfig, ChartContainer, ChartLegend } from "@/components/ui/chart";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { highQualityFunc, lowQualityFunc, medQualityFunc } from "./functions";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { QualityContext } from ".";
 import { useContext } from "react";
 
@@ -25,37 +24,32 @@ const CustomLegend = (props: DefaultLegendContentProps) => {
       {payload?.map((entry, index) => (
         <li key={`item-${index}`} className="flex items-center gap-1">
           <div className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }} />
-          {entry.value === "low" && "Низкое"}
-          {entry.value === "med" && "Среднее"}
-          {entry.value === "high" && "Высокое"}
+          {entry.value === "low" && "Низкая"}
+          {entry.value === "med" && "Средняя"}
+          {entry.value === "high" && "Высокая"}
         </li>
       ))}
     </ul>
   );
 };
 
-const generateData = () => {
-  return new Array(101).fill(0).map((_, index) => ({
-    speed: index,
-    low: lowQualityFunc(index),
-    med: medQualityFunc(index),
-    high: highQualityFunc(index),
-  }));
-};
+const data = [
+  { performance: 0, low: 1, med: undefined, high: undefined },
+  { performance: 40, low: 1, med: 0, high: undefined },
+  { performance: 50, low: 0, med: 1, high: undefined },
+  { performance: 70, low: undefined, med: 1, high: 0 },
+  { performance: 80, low: undefined, med: 0, high: 1 },
+  { performance: 100, low: undefined, med: undefined, high: 1 },
+];
 
 const chartConfig = {} satisfies ChartConfig;
 
-export const QualityChart = () => {
+export const PerfomanceChart = () => {
   const { quality } = useContext(QualityContext);
-  const data = generateData();
   return (
     <Card className="shadow-none w-fit">
       <CardHeader className="items-center flex flex-col">
-        <CardTitle>Терм-множество качества ПО</CardTitle>
-        <CardDescription className="max-w-md text-center flex justify-center">
-          Оценивается с помощью автоматических тестов (покрытие кода тестами) или анализа качества
-          кода (например, по показателю технического долга)
-        </CardDescription>
+        <CardTitle>Терм-множество производительности разработки ПО</CardTitle>
       </CardHeader>
       <CardContent className="p-10">
         <ChartContainer config={chartConfig} className="w-[500px] h-[300px] ">
@@ -71,14 +65,18 @@ export const QualityChart = () => {
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
-              dataKey="speed"
+              dataKey="performance"
               type="number"
               tickLine={false}
               tickMargin={8}
               max={10}
               ticks={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}
             >
-              <Label value="Качество разработки, %" offset={-10} position="insideBottom" />
+              <Label
+                value="Производительность разработки, %"
+                offset={-10}
+                position="insideBottom"
+              />
             </XAxis>
             <YAxis dataKey="" tickLine={false} tickMargin={8} max={1} />
 

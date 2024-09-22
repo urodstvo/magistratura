@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import { QualityChart } from "./quality-chart";
 import { SpeedChart } from "./speed-chart";
 import { Rules } from "./rules";
+import { PerfomanceChart } from "./perfomance-chart";
 
 export const SpeedContext = createContext<{
   setSpeed: (speed: number) => void;
@@ -37,9 +38,10 @@ export const TaskPage = () => {
   return (
     <Provider>
       <div className="p-10 flex flex-col ">
-        <div className="flex justify-center items-center gap-10 flex-col xl:flex-row">
+        <div className="flex justify-center items-center gap-10 flex-col xl:flex-row xl:items-stretch">
           <SpeedChart />
           <QualityChart />
+          <PerfomanceChart />
         </div>
         <Rules />
       </div>
