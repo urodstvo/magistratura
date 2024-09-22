@@ -5,7 +5,6 @@ import {
   Label,
   Line,
   LineChart,
-  ReferenceLine,
   XAxis,
   YAxis,
   type DefaultLegendContentProps,
@@ -13,8 +12,6 @@ import {
 
 import { ChartConfig, ChartContainer, ChartLegend } from "@/components/ui/chart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { QualityContext } from ".";
-import { useContext } from "react";
 
 const CustomLegend = (props: DefaultLegendContentProps) => {
   const { payload } = props;
@@ -45,7 +42,6 @@ const data = [
 const chartConfig = {} satisfies ChartConfig;
 
 export const PerfomanceChart = () => {
-  const { quality } = useContext(QualityContext);
   return (
     <Card className="shadow-none w-fit">
       <CardHeader className="items-center flex flex-col">
@@ -83,8 +79,6 @@ export const PerfomanceChart = () => {
             <Line dataKey="low" type="linear" stroke="red" strokeWidth={2} dot={false} />
             <Line dataKey="med" type="linear" stroke="green" strokeWidth={2} dot={false} />
             <Line dataKey="high" type="linear" stroke="blue" strokeWidth={2} dot={false} />
-
-            <ReferenceLine x={quality} stroke="purple" />
 
             <ChartLegend content={<CustomLegend />} />
           </LineChart>
