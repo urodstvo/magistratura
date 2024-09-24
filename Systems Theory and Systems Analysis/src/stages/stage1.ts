@@ -1,4 +1,5 @@
 import { Body, Cell, HCell, Header, Row, Table } from '../components/table';
+import { n, N } from '../constants';
 import c from '../param-contsraint.json';
 
 const num_table = [
@@ -14,7 +15,7 @@ const num_table = [
     [1, 1, 5, 11, 27, 53, 69, 25, 103, 615],
 ];
 
-const findCoords = (x: number, y: number) => {
+export const findCoords = (x: number = N, y: number = n): number[][] => {
     const arr = new Array(x).fill(0).map(() => new Array(y).fill(0));
 
     for (let i = 1; i <= x; i++) {
@@ -43,14 +44,14 @@ const findCoords = (x: number, y: number) => {
     return arr;
 };
 
-export const getPointsTable = (x: number, y: number) => {
-    const coords = findCoords(x, y);
+export const getPointsTable = () => {
+    const coords = findCoords();
     const rows: string[] = [];
 
-    for (let i = 0; i < x; i++) {
+    for (let i = 0; i < N; i++) {
         const cells: string[] = [Cell(i + 1)];
 
-        for (let j = 0; j < y; j++) {
+        for (let j = 0; j < n; j++) {
             cells.push(Cell(coords[i][j]));
         }
         rows.push(Row(cells));
