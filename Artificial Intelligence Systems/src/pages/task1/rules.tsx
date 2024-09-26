@@ -21,7 +21,7 @@ const QualityInput = () => {
         max={100}
         id={id}
         value={ctx.quality}
-        onChange={(e) => ctx.setQuality(+e.target.value)}
+        onChange={(e) => ctx.setQuality(+parseFloat(e.target.value).toFixed(2).replace(",", "."))}
         className="border-[1px] rounded border-black pl-2 pr-1 py-1 w-[200px]"
       />
     </div>
@@ -38,6 +38,7 @@ const SpeedInput = () => {
         type="number"
         min={0}
         max={10}
+        step="1"
         id={id}
         value={ctx.speed}
         onChange={(e) => ctx.setSpeed(+e.target.value)}

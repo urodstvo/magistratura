@@ -70,7 +70,12 @@ export const SpeedChart = () => {
             }}
           >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="speed" tickLine={false} tickMargin={8} max={10}>
+            <XAxis
+              dataKey="speed"
+              max={10}
+              type="number"
+              ticks={[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+            >
               <Label value="Скорость разработки, неделя" offset={-10} position="insideBottom" />
             </XAxis>
             <YAxis dataKey="" tickLine={false} tickMargin={8} max={1} />
