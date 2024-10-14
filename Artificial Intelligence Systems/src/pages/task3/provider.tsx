@@ -2,7 +2,6 @@ import { createContext, useContext, useState } from "react";
 
 export type Actions = {
   event: [number, number, number, number];
-  setEvent: React.Dispatch<React.SetStateAction<[number, number, number, number]>>;
 }[];
 
 const MaxValueContext = createContext<{
@@ -22,7 +21,9 @@ const ConfiguratorContext = createContext<{
 });
 
 export const Provider = ({ children }: { children: React.ReactNode }) => {
-  const [actions, setState] = useState([] as Actions);
+  const [actions, setState] = useState([
+    { event: [0, 0, 100, 100] },
+  ] as Actions);
   const [value, setValue] = useState(100);
   return (
     <MaxValueContext.Provider value={{ value, setValue }}>

@@ -1,30 +1,26 @@
-import { useEffect, useState } from "react";
-import { useMaxValue, useProvider } from "./provider";
+import { useEffect, useMemo, useState } from "react";
+import { Actions, useMaxValue, useProvider } from "./provider";
 
 const EventInput = ({ number }: { number: number }) => {
   const { actions, setState } = useProvider();
   const { value } = useMaxValue();
   const action = actions[number];
-  const isFirst = number === 0;
-  const isLast = number === actions.length;
-
-  const [event, setEvent] = useState<[number, number, number, number]>([
-    0, 0, 0, 0,
-  ]);
-
-  useEffect(() => {
-    setState((prev) =>
-      prev.map((el, ind) => (ind === number ? { event, setEvent } : el))
-    );
-
-    return () => {
-      setState((prev) => prev.filter((_, ind) => ind !== number));
-    };
-  }, [number, event]);
+  const isFirst = useMemo(() => number === 0, [number]);
+  const isLast = useMemo(
+    () => number === actions.length - 1,
+    [number, actions]
+  );
 
   useEffect(() => {
-    if (isLast) setEvent([0, 0, value, value]);
-  }, [isLast, setEvent, value]);
+    if (isLast)
+      setState((prev) =>
+        prev.map((el, ind) =>
+          ind === prev.length - 1
+            ? { event: [el.event[0], el.event[1], value, value] }
+            : el
+        )
+      );
+  }, [isLast, value]);
 
   return (
     <div className="flex gap-5">
@@ -41,7 +37,6 @@ const EventInput = ({ number }: { number: number }) => {
               prev.map((act, ind) =>
                 ind === number
                   ? {
-                      setEvent,
                       event: [
                         +e.target.value,
                         act.event[1],
@@ -65,7 +60,6 @@ const EventInput = ({ number }: { number: number }) => {
               prev.map((act, ind) =>
                 ind === number
                   ? {
-                      setEvent,
                       event: [
                         act.event[0],
                         +e.target.value,
@@ -84,7 +78,6 @@ const EventInput = ({ number }: { number: number }) => {
               prev.map((act, ind) =>
                 ind === number
                   ? {
-                      setEvent,
                       event: [
                         act.event[0],
                         act.event[1],
@@ -96,14 +89,14 @@ const EventInput = ({ number }: { number: number }) => {
               )
             )
           }
-          defaultValue={isLast ? value : action?.event?.[2]}
+          value={isLast ? value : action?.event?.[2]}
           disabled={isLast}
           className="border px-2 border-black w-[100px]"
           type="number"
           placeholder="Right one"
         />
         <input
-          defaultValue={isLast ? value : action?.event?.[3]}
+          value={isLast ? value : action?.event?.[3]}
           disabled={isLast}
           className="border px-2 border-black w-[100px]"
           type="number"
@@ -113,7 +106,6 @@ const EventInput = ({ number }: { number: number }) => {
               prev.map((act, ind) =>
                 ind === number
                   ? {
-                      setEvent,
                       event: [
                         act.event[0],
                         act.event[1],
@@ -133,16 +125,8 @@ const EventInput = ({ number }: { number: number }) => {
 
 export const EventsConfigurator = () => {
   const { value, setValue } = useMaxValue();
-  const [count, setCount] = useState(3);
+  const [count, setCount] = useState(1);
   const { setState } = useProvider();
-
-  const inputs = new Array(count)
-    .fill(0)
-    .map((_, index) => <EventInput key={index} number={index} />);
-
-  useEffect(() => {
-    setState(new Array(count).fill({}));
-  }, [count]);
 
   return (
     <div className="flex flex-col gap-5">
@@ -155,18 +139,26 @@ export const EventsConfigurator = () => {
           placeholder="Max. value"
         />
       </div>
-      {inputs.map((input, index) => (
-        <div key={index}>{input}</div>
+      {new Array(count).fill(0).map((_, index) => (
+        <EventInput key={`input${index}`} number={index} />
       ))}
       <button
-        className=" rounded-lg px-2 border-black bg-zinc-500 text-white py-2"
-        onClick={() => setCount((prev) => prev + 1)}
+        className="rounded-lg px-2 border-black bg-zinc-500 text-white py-2"
+        onClick={() => {
+          setCount((prev) => prev + 1);
+          setState(
+            (prev) => [...prev, { event: [0, 0, value, value] }] as Actions
+          );
+        }}
       >
         Добавить терм
       </button>
       <button
-        className=" rounded-lg px-2 border-black bg-zinc-400 py-2"
-        onClick={() => setCount((prev) => prev - 1)}
+        className="rounded-lg px-2 border-black bg-zinc-400 py-2"
+        onClick={() => {
+          setCount((prev) => prev - 1);
+          setState((prev) => prev.slice(0, count - 1));
+        }}
       >
         Удалить терм
       </button>

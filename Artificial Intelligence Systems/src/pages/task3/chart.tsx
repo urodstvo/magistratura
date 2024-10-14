@@ -43,7 +43,7 @@ type DataObject = {
   [key: string]: number | string | undefined;
 };
 
-const genFuncValue = (zero: number, one: number, x: number) => {
+const getFuncValue = (zero: number, one: number, x: number) => {
   if (one === zero) return 1;
   const a = -1 / (zero - one);
   const b = -zero * a;
@@ -58,35 +58,31 @@ const useGenerateData = () => {
   const [data, setData] = useState<DataObject[]>([]);
 
   useEffect(() => {
-    if (actions[0]?.event && actions[0].event.length) {
-      const data: DataObject[] = new Array(value + 1)
-        .fill(0)
-        .map((_, index) => ({
-          x: index,
-        }));
+    const data: DataObject[] = new Array(value + 1).fill(0).map((_, index) => ({
+      x: index,
+    }));
 
-      for (let i = 0; i < data.length; i++) {
-        for (let j = 0; j < actions.length; j++) {
-          if (i >= actions[j].event[0] && i <= actions[j].event[1])
-            data[i][`term${j}`] = genFuncValue(
-              actions[j].event[0],
-              actions[j].event[1],
-              i
-            );
-          else if (i > actions[j].event[1] && i < actions[j].event[2])
-            data[i][`term${j}`] = 1;
-          else if (i >= actions[j].event[2] && i <= actions[j].event[3])
-            data[i][`term${j}`] = genFuncValue(
-              actions[j].event[3],
-              actions[j].event[2],
-              i
-            );
-          else data[i][`term${j}`] = undefined;
-        }
+    for (let i = 0; i < data.length; i++) {
+      for (let j = 0; j < actions.length; j++) {
+        if (i >= actions[j].event[0] && i <= actions[j].event[1])
+          data[i][`term${j}`] = getFuncValue(
+            actions[j].event[0],
+            actions[j].event[1],
+            i
+          );
+        else if (i > actions[j].event[1] && i < actions[j].event[2])
+          data[i][`term${j}`] = 1;
+        else if (i >= actions[j].event[2] && i <= actions[j].event[3])
+          data[i][`term${j}`] = getFuncValue(
+            actions[j].event[3],
+            actions[j].event[2],
+            i
+          );
+        else data[i][`term${j}`] = undefined;
       }
-
-      setData(data);
     }
+
+    setData(data);
   }, [value, actions]);
 
   return data;
@@ -131,6 +127,7 @@ export const Chart = () => {
           const randomColor = Math.floor(Math.random() * 16777215).toString(16);
           return (
             <Line
+              key={`term${index}`}
               dataKey={`term${index}`}
               type="linear"
               stroke={`#${randomColor}`}
