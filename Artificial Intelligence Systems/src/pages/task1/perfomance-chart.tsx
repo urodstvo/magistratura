@@ -11,7 +11,11 @@ import {
   type DefaultLegendContentProps,
 } from "recharts";
 
-import { ChartConfig, ChartContainer, ChartLegend } from "@/components/ui/chart";
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartLegend,
+} from "@/components/ui/chart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useContext } from "react";
 import { QualityContext, SpeedContext } from ".";
@@ -31,7 +35,10 @@ const CustomLegend = (props: DefaultLegendContentProps) => {
     <ul className="flex gap-2 justify-center mt-4">
       {payload?.map((entry, index) => (
         <li key={`item-${index}`} className="flex items-center gap-1">
-          <div className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }} />
+          <div
+            className="w-2 h-2 rounded-full"
+            style={{ backgroundColor: entry.color }}
+          />
           {entry.value === "low" && "Низкая"}
           {entry.value === "med" && "Средняя"}
           {entry.value === "high" && "Высокая"}
@@ -68,7 +75,7 @@ export const PerfomanceChart = () => {
 
   const isHigh =
     (medSpeedFunc(speed) && highQualityFunc(quality)) ||
-    (highSpeedFunc(speed) && medSpeedFunc(quality)) ||
+    (highSpeedFunc(speed) && medQualityFunc(quality)) ||
     (highSpeedFunc(speed) && highQualityFunc(quality));
 
   const dataWithRange = data.map((el) => ({
@@ -111,9 +118,27 @@ export const PerfomanceChart = () => {
             </XAxis>
             <YAxis dataKey="" tickLine={false} tickMargin={8} max={1} />
 
-            <Line dataKey="low" type="linear" stroke="red" strokeWidth={2} dot={false} />
-            <Line dataKey="med" type="linear" stroke="green" strokeWidth={2} dot={false} />
-            <Line dataKey="high" type="linear" stroke="blue" strokeWidth={2} dot={false} />
+            <Line
+              dataKey="low"
+              type="linear"
+              stroke="red"
+              strokeWidth={2}
+              dot={false}
+            />
+            <Line
+              dataKey="med"
+              type="linear"
+              stroke="green"
+              strokeWidth={2}
+              dot={false}
+            />
+            <Line
+              dataKey="high"
+              type="linear"
+              stroke="blue"
+              strokeWidth={2}
+              dot={false}
+            />
 
             <Area dataKey="rangeLow" stroke="black" fill="black" />
             <Area dataKey="rangeMed" stroke="black" fill="black" />

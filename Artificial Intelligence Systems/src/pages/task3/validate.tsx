@@ -15,6 +15,7 @@ export const Errors = () => {
     let range = 0;
     for (let i = 0; i < actions.length; i++) {
       const action = actions[i].event;
+      if (!action || !action.length) break;
       if (action[0] <= range && action[3] > range) range = action[3];
       for (let j = 1; j < actions.length; j++) {
         const another = actions[j].event;
@@ -32,7 +33,9 @@ export const Errors = () => {
 
   return (
     <ul>
-      <li>{isIntersection ? "Нарушено требование к разграничению понятий" : ""}</li>
+      <li>
+        {isIntersection ? "Нарушено требование к разграничению понятий" : ""}
+      </li>
       <li>
         {isCovering
           ? "Нарушено требование к полноте покрытия предметной области областями определения функций принадлежности лингвистической переменной"

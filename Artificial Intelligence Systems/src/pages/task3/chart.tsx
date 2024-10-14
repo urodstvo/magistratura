@@ -9,9 +9,13 @@ import {
   type DefaultLegendContentProps,
 } from "recharts";
 
-import { ChartConfig, ChartContainer, ChartLegend } from "@/components/ui/chart";
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartLegend,
+} from "@/components/ui/chart";
 import { useMaxValue, useProvider } from "./provider";
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 
 const CustomLegend = (props: DefaultLegendContentProps) => {
   const { payload } = props;
@@ -22,7 +26,10 @@ const CustomLegend = (props: DefaultLegendContentProps) => {
         const num = entry.value.replace("term", "");
         return (
           <li key={`item-${index}`} className="flex items-center gap-1">
-            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }} />
+            <div
+              className="w-2 h-2 rounded-full"
+              style={{ backgroundColor: entry.color }}
+            />
             {`Терм ${num}`}
           </li>
         );
@@ -48,24 +55,39 @@ const useGenerateData = () => {
   const { value } = useMaxValue();
   const { actions } = useProvider();
 
-  const data: DataObject[] = useMemo(
-    () =>
-      new Array(value + 1).fill(0).map((_, index) => ({
-        x: index,
-      })),
-    [value]
-  );
+  const [data, setData] = useState<DataObject[]>([]);
 
-  for (let i = 0; i < data.length; i++) {
-    for (let j = 0; j < actions.length; j++) {
-      if (i >= actions[j].event[0] && i <= actions[j].event[1])
-        data[i][`term${j}`] = genFuncValue(actions[j].event[0], actions[j].event[1], i);
-      else if (i > actions[j].event[1] && i < actions[j].event[2]) data[i][`term${j}`] = 1;
-      else if (i >= actions[j].event[2] && i <= actions[j].event[3])
-        data[i][`term${j}`] = genFuncValue(actions[j].event[3], actions[j].event[2], i);
-      else data[i][`term${j}`] = undefined;
+  useEffect(() => {
+    if (actions[0]?.event && actions[0].event.length) {
+      const data: DataObject[] = new Array(value + 1)
+        .fill(0)
+        .map((_, index) => ({
+          x: index,
+        }));
+
+      for (let i = 0; i < data.length; i++) {
+        for (let j = 0; j < actions.length; j++) {
+          if (i >= actions[j].event[0] && i <= actions[j].event[1])
+            data[i][`term${j}`] = genFuncValue(
+              actions[j].event[0],
+              actions[j].event[1],
+              i
+            );
+          else if (i > actions[j].event[1] && i < actions[j].event[2])
+            data[i][`term${j}`] = 1;
+          else if (i >= actions[j].event[2] && i <= actions[j].event[3])
+            data[i][`term${j}`] = genFuncValue(
+              actions[j].event[3],
+              actions[j].event[2],
+              i
+            );
+          else data[i][`term${j}`] = undefined;
+        }
+      }
+
+      setData(data);
     }
-  }
+  }, [value, actions]);
 
   return data;
 };
@@ -96,7 +118,13 @@ export const Chart = () => {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="x" type="number" tickLine={false} tickMargin={8} max={value} />
+        <XAxis
+          dataKey="x"
+          type="number"
+          tickLine={false}
+          tickMargin={8}
+          max={value}
+        />
         <YAxis dataKey="" tickLine={false} tickMargin={8} max={1} />
 
         {actions.map((_, index) => {
