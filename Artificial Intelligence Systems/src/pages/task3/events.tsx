@@ -73,6 +73,7 @@ const EventInput = ({ number }: { number: number }) => {
           }
         />
         <input
+          value={isLast ? value : action?.event?.[2]}
           onChange={(e) =>
             setState((prev) =>
               prev.map((act, ind) =>
@@ -89,7 +90,6 @@ const EventInput = ({ number }: { number: number }) => {
               )
             )
           }
-          value={isLast ? value : action?.event?.[2]}
           disabled={isLast}
           className="border px-2 border-black w-[100px]"
           type="number"
