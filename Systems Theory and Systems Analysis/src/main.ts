@@ -1,7 +1,7 @@
 import { HeaderComponent } from './components/header';
 import { getPointsTable } from './stages/stage1';
 import { getSelectionTable } from './stages/stage2';
-import { solution } from './stages/stage3';
+import { printChart } from './stages/stage3';
 import './style.css';
 
 document.querySelector('#app')!.innerHTML = HeaderComponent;
@@ -18,7 +18,7 @@ switch (pathname) {
         break;
     }
     case '/task3': {
-        solution();
+        document.querySelector('#app')!.appendChild(printChart());
         break;
     }
     default: {
