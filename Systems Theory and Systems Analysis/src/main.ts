@@ -1,8 +1,8 @@
 import { HeaderComponent } from './components/header';
 import { getPointsTable } from './stages/stage1';
-import { getSelectionTable } from './stages/stage2';
+import { getSolutionTable as getStep2SolutionTable } from './stages/stage2';
 import { printChart } from './stages/stage3';
-import { solution } from './stages/stage4';
+import { getSolutionTable as getStep4SolutionTable, solution } from './stages/stage4';
 import './style.css';
 
 document.querySelector('#app')!.innerHTML = HeaderComponent;
@@ -15,7 +15,7 @@ switch (pathname) {
         break;
     }
     case '/task2': {
-        document.querySelector('#app')!.innerHTML += getSelectionTable();
+        document.querySelector('#app')!.innerHTML += getStep2SolutionTable();
         break;
     }
     case '/task3': {
@@ -24,7 +24,7 @@ switch (pathname) {
     }
     case '/task4': {
         solution();
-        document.querySelector('#app')!.appendChild();
+        document.querySelector('#app')!.innerHTML += getStep4SolutionTable();
         break;
     }
     default: {

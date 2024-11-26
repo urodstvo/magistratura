@@ -1,5 +1,6 @@
 import { solution as step3_solution } from './stage3';
 import { solution as step2_solution } from './stage2';
+import { Cell, Row, Table, Header, HCell, Body } from '../components/table';
 
 function findClosestToMajority(arr: number[]): number {
     // Вычисляем среднее значение разностей для каждого элемента
@@ -55,39 +56,67 @@ function calculatePeriods(data: number[][], timeStep: number = 0.005): number[] 
     return periods;
 }
 
-function calculateAcceleration(positions: number[], timeStep: number = 0.005): number[] {
-    const accelerations: number[] = [];
-    for (let i = 1; i < positions.length - 1; i++) {
-        const acceleration = (positions[i + 1] - 2 * positions[i] + positions[i - 1]) / (timeStep * timeStep);
-        accelerations.push(acceleration);
-    }
-    return accelerations;
-}
-
 export function solution() {
     const mps = [4, 5, 6, 8];
     let [points] = step2_solution();
     // console.log(points.length, counter);
-    points = points.map((el) => el.slice(1));
-    console.log(points);
+    // points = points.map((el) => el.slice(1));
+    console.log('@step4 start', points.length);
 
     for (let mp of mps) {
+        console.log(mp);
         points = points.filter((alpha) => {
-            const system_solution = step3_solution(alpha, mp);
-            const periods = calculatePeriods(system_solution.map((el) => [el.x1, el.x2]));
-            // const period = findClosestToMajority(periods);
-            const period = periods[0];
+            const system_solution = step3_solution(alpha.slice(1), mp);
+            const periods = calculatePeriods(system_solution.map((el) => [el.x1, el.x2, el.y1, el.y2]));
+            const period = findClosestToMajority(periods);
+            // const period = periods[0];
             const omega = 1.0 / period;
+            // console.log(periods, period);
 
-            if (alpha[9] - omega < 83) return false;
-            const x1 = system_solution.map((el) => el.x1);
-            const accelerations = calculateAcceleration(x1);
-            if (Math.min(...accelerations) < 4 || Math.min(...accelerations) > 6) return false;
-            if (Math.max(...accelerations) < 4 || Math.max(...accelerations) > 6) return false;
-
-            console.log(accelerations);
+            if (alpha[10] - omega < 83) return false;
+            let accelerations = system_solution.map((el) => el.y1);
+            console.log(Math.min(...accelerations), Math.max(...accelerations));
+            if (Math.abs(Math.min(...accelerations)) < 3.5 || Math.abs(Math.min(...accelerations)) > 6) return false;
+            if (Math.abs(Math.max(...accelerations)) < 3.5 || Math.abs(Math.max(...accelerations)) > 6) return false;
             return true;
         });
     }
-    console.log(points);
+    console.log('@step4 end', points.length);
+
+    return points;
 }
+
+export const getSolutionTable = () => {
+    const points = solution();
+
+    const rows: string[] = [];
+
+    for (let i = 0; i < points.length; i++) {
+        const cells: string[] = [];
+
+        for (let j = 0; j < points[i].length; j++) {
+            cells.push(Cell(points[i][j]));
+        }
+        rows.push(Row(cells));
+    }
+
+    return Table(
+        Header(
+            Row([
+                HCell('№'),
+                HCell('α<sub>1</sub>'),
+                HCell('α<sub>2</sub>'),
+                HCell('α<sub>3</sub>'),
+                HCell('α<sub>4</sub>'),
+                HCell('α<sub>5</sub>'),
+                HCell('α<sub>6</sub>'),
+                HCell('α<sub>7</sub>'),
+                HCell('α<sub>8</sub>'),
+                HCell('α<sub>9</sub>'),
+                HCell('α<sub>10</sub>'),
+            ]),
+        ),
+        Body(rows),
+        null,
+    );
+};

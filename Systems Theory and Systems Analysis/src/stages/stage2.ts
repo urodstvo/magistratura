@@ -51,7 +51,7 @@ export const solution = (): [number[][], CounterType] => {
     return [selected, counter];
 };
 
-export const getSelectionTable = () => {
+export const getSolutionTable = () => {
     const [selected, counter] = solution();
     console.log(counter);
 

@@ -65,8 +65,12 @@ export const solution = (alpha: number[] = [49.5, 79.5, 1414, 27, 27, 0.4, 5, 6,
     let y2 = Y2;
     let x1 = X1;
     let x2 = X2;
+    let a2 = 0;
+    let a1 = 0;
 
-    const result: { t: number; x1: number; x2: number; y1: number; y2: number }[] = [{ t, x1, x2, y1, y2 }];
+    const result: { t: number; x1: number; x2: number; y1: number; y2: number; a1: number; a2: number }[] = [
+        { t, x1, x2, y1, y2, a1, a2 },
+    ];
 
     for (let i = 1; i <= n; i++) {
         t = parseFloat((t0 + i * h).toFixed(3));
@@ -74,15 +78,18 @@ export const solution = (alpha: number[] = [49.5, 79.5, 1414, 27, 27, 0.4, 5, 6,
         const x1_new = x1 + h * y1;
         const x2_new = x2 + h * y2;
 
-        const y1_new = y1 + h * $y1(t, x1, x2, y1, y2, alpha, Mp);
-        const y2_new = y2 + h * $y2(t, x1, x2, y1, y2, alpha, Mp);
+        const a1 = $y1(t, x1, x2, y1, y2, alpha, Mp);
+        const a2 = $y2(t, x1, x2, y1, y2, alpha, Mp);
+
+        const y1_new = y1 + h * a1;
+        const y2_new = y2 + h * a2;
 
         y1 = y1_new;
         y2 = y2_new;
         x1 = x1_new;
         x2 = x2_new;
 
-        result.push({ t, x1, x2, y1, y2 });
+        result.push({ t, x1, x2, y1, y2, a1, a2 });
     }
 
     // console.log(result);
