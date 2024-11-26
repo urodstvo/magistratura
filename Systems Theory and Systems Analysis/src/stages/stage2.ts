@@ -20,7 +20,7 @@ type CounterType = {
     f5: number;
     f6: number;
 };
-export const limitSelection = (): [number[][], CounterType] => {
+export const solution = (): [number[][], CounterType] => {
     const coords = findCoords();
 
     const selected: number[][] = [];
@@ -52,7 +52,7 @@ export const limitSelection = (): [number[][], CounterType] => {
 };
 
 export const getSelectionTable = () => {
-    const [selected, counter] = limitSelection();
+    const [selected, counter] = solution();
     console.log(counter);
 
     const rows: string[] = [];
