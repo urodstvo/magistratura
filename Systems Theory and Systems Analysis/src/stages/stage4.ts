@@ -61,10 +61,10 @@ export function solution() {
     let [points] = step2_solution();
     // console.log(points.length, counter);
     // points = points.map((el) => el.slice(1));
-    console.log('@step4 start', points.length);
+    // console.log('@step4 start', points.length);
 
     for (let mp of mps) {
-        console.log(mp);
+        // console.log(mp);
         points = points.filter((alpha) => {
             const system_solution = step3_solution(alpha.slice(1), mp);
             const periods = calculatePeriods(system_solution.map((el) => [el.x1, el.x2, el.y1, el.y2]));
@@ -75,13 +75,13 @@ export function solution() {
 
             if (alpha[10] - omega < 83) return false;
             let accelerations = system_solution.map((el) => el.y1);
-            console.log(Math.min(...accelerations), Math.max(...accelerations));
+            // console.log(Math.min(...accelerations), Math.max(...accelerations));
             if (Math.abs(Math.min(...accelerations)) < 3.5 || Math.abs(Math.min(...accelerations)) > 6) return false;
             if (Math.abs(Math.max(...accelerations)) < 3.5 || Math.abs(Math.max(...accelerations)) > 6) return false;
             return true;
         });
     }
-    console.log('@step4 end', points.length);
+    // console.log('@step4 end', points.length);
 
     return points;
 }
