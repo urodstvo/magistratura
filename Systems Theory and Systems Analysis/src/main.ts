@@ -4,6 +4,8 @@ import { getSolutionTable as getStep2SolutionTable } from './stages/stage2';
 import { printChart } from './stages/stage3';
 import { getSolutionTable as getStep4SolutionTable } from './stages/stage4';
 import { getSolutionTable as getStep5SolutionTable } from './stages/stage5';
+import { getSolutionTable as getStep6SolutionTable } from './stages/stage6';
+import { getSolutionTable as getStep7SolutionTable, getSolutionPointTable, getCharts } from './stages/stage7';
 import './style.css';
 
 document.querySelector('#app')!.innerHTML = HeaderComponent;
@@ -29,6 +31,16 @@ switch (pathname) {
     }
     case '/task5': {
         document.querySelector('#app')!.innerHTML += getStep5SolutionTable();
+        break;
+    }
+    case '/task6': {
+        document.querySelector('#app')!.innerHTML += getStep6SolutionTable();
+        break;
+    }
+    case '/task7': {
+        document.querySelector('#app')!.innerHTML += getStep7SolutionTable();
+        document.querySelector('#app')!.innerHTML += getSolutionPointTable();
+        for (let chart of getCharts()) document.querySelector('#app')!.appendChild(chart);
         break;
     }
     default: {
