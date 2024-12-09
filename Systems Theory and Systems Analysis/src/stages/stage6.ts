@@ -1,5 +1,6 @@
 import { Cell, Row, Table, Header, HCell, Body } from '../components/table';
 import { solution as stage5_solution } from './stage5';
+import { solution as stage2_solution } from './stage2';
 
 export function solution() {
     const Fs = stage5_solution();
@@ -25,7 +26,10 @@ export function solution() {
 }
 
 export const getSolutionTable = () => {
-    const points = solution();
+    const fs = solution();
+    const [selected] = stage2_solution();
+
+    const points = selected.filter((el) => fs.some((f) => f[0] === el[0]));
 
     const rows: string[] = [];
 
@@ -42,10 +46,16 @@ export const getSolutionTable = () => {
         Header(
             Row([
                 HCell('№'),
-                HCell('F<sub>1</sub>'),
-                HCell('F<sub>2</sub>'),
-                HCell('F<sub>3</sub>'),
-                HCell('F<sub>4</sub>'),
+                HCell('α<sub>1</sub>'),
+                HCell('α<sub>2</sub>'),
+                HCell('α<sub>3</sub>'),
+                HCell('α<sub>4</sub>'),
+                HCell('α<sub>5</sub>'),
+                HCell('α<sub>6</sub>'),
+                HCell('α<sub>7</sub>'),
+                HCell('α<sub>8</sub>'),
+                HCell('α<sub>9</sub>'),
+                HCell('α<sub>10</sub>'),
             ]),
         ),
         Body(rows),
