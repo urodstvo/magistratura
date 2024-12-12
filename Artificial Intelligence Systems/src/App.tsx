@@ -3,6 +3,7 @@ import { TaskPage as Task1Page } from "./pages/task1";
 import { TaskPage as Task2Page } from "./pages/task2";
 import { TaskPage as Task3Page } from "./pages/task3";
 import { TaskPage as Task4Page } from "./pages/task4";
+import { LAB3PAGE } from "./pages/lr3";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: "/task4",
         element: <Task4Page />,
+      },
+      {
+        path: "/lab3",
+        element: <LAB3PAGE />,
       },
     ],
   },
